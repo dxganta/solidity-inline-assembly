@@ -14,10 +14,16 @@ contract AssemblyStorage {
         }
     }
 
+    function updateStorageVar(uint256 slot, uint256 newVal) public {
+        assembly {
+            sstore(slot, newVal)
+        }
+    }
+
     /// @notice adding number to storage variable at specified slot
     /// @param slot slot number of the storage variable that you want to add with
     /// @param num the number that you want to add to the storage variable
-    function addToStorageVar(uint256 slot, uint256 num)
+    function addWithStorageVar(uint256 slot, uint256 num)
         public
         view
         returns (uint256)
