@@ -22,3 +22,9 @@ def test_assembly_struct():
     assert (a == x)
     assert (b == y)
     assert (c == z)
+
+    (x,y,z) = s.testPackedMLoad((a,b,c))
+
+    assert (a == x)
+    assert (b == y)
+    assert (c == z)

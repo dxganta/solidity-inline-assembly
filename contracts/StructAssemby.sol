@@ -3,7 +3,7 @@ pragma experimental ABIEncoderV2;
 
 /**
     mload(struct) loads the first param of the struct
-    to load any subsequent params of the struct just go mload(struct + 32)
+    to load any subsequent params of the struct just go mload(struct + 32 bytes)
 
     use calldataload() for calldata
     use mload() for memory data
@@ -14,6 +14,12 @@ contract StructAssembly {
         uint256 x;
         uint256 y;
         uint256 z;
+    }
+
+    struct Packed {
+        uint64 x;
+        uint64 y;
+        uint128 z;
     }
 
     function testMFunc(
@@ -65,6 +71,23 @@ contract StructAssembly {
             _z := calldataload(datai)
             _w := calldataload(add(datai, 0x20))
             _y := calldataload(add(datai, 0x40))
+        }
+    }
+
+    function testPackedMLoad(Packed memory data)
+        public
+        pure
+        returns (
+            uint64 a,
+            uint64 b,
+            uint128 c
+        )
+    {
+        assembly {
+            // in memory everything is stored in slots of 32 bytes so doesnt matter if it is uint64 or uint256
+            a := mload(data)
+            b := mload(add(data, 0x20))
+            c := mload(add(data, 0x40))
         }
     }
 }
